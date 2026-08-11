@@ -95,11 +95,41 @@
 				$nav.removeAttr( 'aria-hidden' );
 			}
 		} );
+
+		// Sticky Header Logic
+		if ( $wrapper.hasClass( 'kv-menu-sticky-enabled' ) ) {
+			var stickyOffset = parseInt( $wrapper.attr( 'data-sticky-offset' ), 10 ) || 100;
+			$( window ).on( 'scroll', function() {
+				if ( $( window ).scrollTop() > stickyOffset ) {
+					$wrapper.addClass( 'kv-header-sticky' );
+				} else {
+					$wrapper.removeClass( 'kv-header-sticky' );
+				}
+			} );
+		}
+	};
+
+	var KVMegaMenuTabsHandler = function( $scope, $ ) {
+		var $wrapper = $scope.find( '.kv-mega-tabs-wrapper' );
+		var $tabs = $wrapper.find( '.kv-mega-tab-item' );
+		var $panes = $wrapper.find( '.kv-mega-tab-pane' );
+
+		$tabs.on( 'mouseenter click', function() {
+			var $this = $( this );
+			var targetId = $this.attr( 'data-tab-target' );
+
+			$tabs.removeClass( 'active' );
+			$this.addClass( 'active' );
+
+			$panes.removeClass( 'active' );
+			$wrapper.find( '#' + targetId ).addClass( 'active' );
+		} );
 	};
 
 	// Bind to Elementor frontend hooks
 	$( window ).on( 'elementor/frontend/init', function() {
 		elementorFrontend.hooks.addAction( 'frontend/element_ready/kv-menu.default', KVMenuHandler );
+		elementorFrontend.hooks.addAction( 'frontend/element_ready/kv-mega-menu-tabs.default', KVMegaMenuTabsHandler );
 	} );
 
 } )( jQuery );

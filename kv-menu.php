@@ -33,6 +33,10 @@ final class KV_Menu_Extension {
 			return;
 		}
 
+		// Load Admin Dashboard
+		require_once( __DIR__ . '/includes/class-kv-menu-admin-dashboard.php' );
+		\KV_Menu_Admin_Dashboard::instance();
+
 		// Load Mega Menu controller
 		require_once( __DIR__ . '/includes/class-kv-menu-mega.php' );
 		\KV_Menu_Mega::instance();
@@ -59,7 +63,9 @@ final class KV_Menu_Extension {
 
 	public function register_widgets( $widgets_manager ) {
 		require_once( __DIR__ . '/widgets/class-kv-menu-widget.php' );
+		require_once( __DIR__ . '/widgets/class-kv-mega-menu-tabs-widget.php' );
 		$widgets_manager->register( new \KV_Menu_Widget() );
+		$widgets_manager->register( new \KV_Mega_Menu_Tabs_Widget() );
 	}
 
 	public function enqueue_assets() {

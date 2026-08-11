@@ -81,7 +81,8 @@ class KV_Menu_Mega {
 			$mega_alignment = 'center';
 		}
 
-		$templates = get_posts( [
+		// Fetch classic Elementor Section Templates (for backward compatibility)
+		$elementor_templates = get_posts( [
 			'post_type'      => 'elementor_library',
 			'posts_per_page' => -1,
 			'post_status'    => 'publish',
@@ -93,6 +94,15 @@ class KV_Menu_Mega {
 				],
 			],
 		] );
+
+		// Fetch new Mega Menus CPT
+		$mega_menus = get_posts( [
+			'post_type'      => 'kv_mega_menu',
+			'posts_per_page' => -1,
+			'post_status'    => 'publish',
+		] );
+
+		$templates = array_merge( $mega_menus, $elementor_templates );
 
 		$edit_url = '';
 		if ( ! empty( $template_id ) ) {
@@ -263,7 +273,7 @@ class KV_Menu_Mega {
 		$post_id = wp_insert_post( [
 			'post_title'  => $template_title,
 			'post_status' => 'publish',
-			'post_type'   => 'elementor_library',
+			'post_type'   => 'kv_mega_menu',
 		] );
 
 		if ( is_wp_error( $post_id ) ) {

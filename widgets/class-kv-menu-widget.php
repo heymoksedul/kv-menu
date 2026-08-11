@@ -1940,6 +1940,177 @@ class KV_Menu_Widget extends \Elementor\Widget_Base {
 		);
 
 		$this->end_controls_section();
+
+		// ==========================================
+		// ADVANCED HEADER SETTINGS
+		// ==========================================
+
+		$this->start_controls_section(
+			'section_desktop_cta',
+			[
+				'label' => esc_html__( 'Desktop CTA Button', 'kv-menu' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_CONTENT,
+			]
+		);
+
+		$this->add_control(
+			'show_desktop_cta',
+			[
+				'label'        => esc_html__( 'Show Desktop CTA', 'kv-menu' ),
+				'type'         => \Elementor\Controls_Manager::SWITCHER,
+				'return_value' => 'yes',
+				'default'      => 'no',
+			]
+		);
+
+		$this->add_control(
+			'desktop_cta_text',
+			[
+				'label'     => esc_html__( 'Button Text', 'kv-menu' ),
+				'type'      => \Elementor\Controls_Manager::TEXT,
+				'default'     => esc_html__( 'Request A Proposal', 'kv-menu' ),
+				'condition' => [ 'show_desktop_cta' => 'yes' ],
+			]
+		);
+
+		$this->add_control(
+			'desktop_cta_url',
+			[
+				'label'     => esc_html__( 'Button Link', 'kv-menu' ),
+				'type'      => \Elementor\Controls_Manager::URL,
+				'default'   => [ 'url' => '#' ],
+				'condition' => [ 'show_desktop_cta' => 'yes' ],
+			]
+		);
+		
+		$this->add_control(
+			'desktop_cta_icon',
+			[
+				'label'       => esc_html__( 'Button Icon', 'kv-menu' ),
+				'type'        => \Elementor\Controls_Manager::ICONS,
+				'default'     => [
+					'value'   => 'fas fa-arrow-right',
+					'library' => 'fa-solid',
+				],
+				'condition' => [ 'show_desktop_cta' => 'yes' ],
+			]
+		);
+
+		$this->add_control(
+			'desktop_cta_color',
+			[
+				'label'     => esc_html__( 'Button Text Color', 'kv-menu' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .kv-desktop-cta' => 'color: {{VALUE}};',
+				],
+				'condition' => [ 'show_desktop_cta' => 'yes' ],
+			]
+		);
+
+		$this->add_control(
+			'desktop_cta_bg',
+			[
+				'label'     => esc_html__( 'Button Background', 'kv-menu' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .kv-desktop-cta' => 'background-color: {{VALUE}};',
+				],
+				'condition' => [ 'show_desktop_cta' => 'yes' ],
+			]
+		);
+		
+		$this->add_control(
+			'desktop_cta_radius',
+			[
+				'label'      => esc_html__( 'Border Radius', 'kv-menu' ),
+				'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', '%' ],
+				'selectors'  => [
+					'{{WRAPPER}} .kv-desktop-cta' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+				'condition' => [ 'show_desktop_cta' => 'yes' ],
+			]
+		);
+
+		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'section_header_behavior',
+			[
+				'label' => esc_html__( 'Header Behavior (Transparent & Sticky)', 'kv-menu' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_CONTENT,
+			]
+		);
+
+		$this->add_control(
+			'is_transparent_header',
+			[
+				'label'        => esc_html__( 'Enable Transparent Header', 'kv-menu' ),
+				'type'         => \Elementor\Controls_Manager::SWITCHER,
+				'return_value' => 'yes',
+				'default'      => 'no',
+				'description'  => esc_html__( 'Sets the header to position absolute so it overlays the content below it.', 'kv-menu' ),
+			]
+		);
+
+		$this->add_control(
+			'is_sticky_header',
+			[
+				'label'        => esc_html__( 'Enable Sticky Header', 'kv-menu' ),
+				'type'         => \Elementor\Controls_Manager::SWITCHER,
+				'return_value' => 'yes',
+				'default'      => 'no',
+			]
+		);
+
+		$this->add_control(
+			'sticky_offset',
+			[
+				'label'     => esc_html__( 'Sticky Trigger Offset (px)', 'kv-menu' ),
+				'type'      => \Elementor\Controls_Manager::NUMBER,
+				'default'   => 100,
+				'condition' => [ 'is_sticky_header' => 'yes' ],
+			]
+		);
+
+		$this->add_control(
+			'sticky_logo',
+			[
+				'label'     => esc_html__( 'Sticky Logo Image', 'kv-menu' ),
+				'type'      => \Elementor\Controls_Manager::MEDIA,
+				'description' => esc_html__( 'Optional: Upload a different logo to show when the header becomes sticky.', 'kv-menu' ),
+				'condition' => [ 'is_sticky_header' => 'yes' ],
+			]
+		);
+
+		$this->add_control(
+			'sticky_bg_color',
+			[
+				'label'     => esc_html__( 'Sticky Background Color', 'kv-menu' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .kv-header-sticky .kv-menu-main-bar' => 'background-color: {{VALUE}} !important;',
+				],
+				'condition' => [ 'is_sticky_header' => 'yes' ],
+			]
+		);
+
+		$this->add_control(
+			'sticky_text_color',
+			[
+				'label'     => esc_html__( 'Sticky Menu Text Color', 'kv-menu' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .kv-header-sticky .kv-menu-list > .menu-item > a' => 'color: {{VALUE}} !important;',
+					'{{WRAPPER}} .kv-header-sticky .kv-menu-logo-text' => 'color: {{VALUE}} !important;',
+					'{{WRAPPER}} .kv-header-sticky .kv-menu-toggle-btn' => 'color: {{VALUE}} !important;',
+				],
+				'condition' => [ 'is_sticky_header' => 'yes' ],
+			]
+		);
+
+		$this->end_controls_section();
 	}
 
 	protected function render() {
@@ -1968,6 +2139,15 @@ class KV_Menu_Widget extends \Elementor\Widget_Base {
 			$this->add_render_attribute( 'wrapper', 'class', 'kv-menu--hide-underline' );
 		}
 
+		if ( 'yes' === $settings['is_transparent_header'] ) {
+			$this->add_render_attribute( 'wrapper', 'class', 'kv-menu-transparent' );
+		}
+
+		if ( 'yes' === $settings['is_sticky_header'] ) {
+			$this->add_render_attribute( 'wrapper', 'class', 'kv-menu-sticky-enabled' );
+			$this->add_render_attribute( 'wrapper', 'data-sticky-offset', $settings['sticky_offset'] );
+		}
+
 		// Mobile panel attributes
 		$this->add_render_attribute( 'nav', 'id', 'kv-menu-' . $this->get_id() );
 		$this->add_render_attribute( 'nav', 'class', 'kv-menu-nav' );
@@ -1991,7 +2171,10 @@ class KV_Menu_Widget extends \Elementor\Widget_Base {
 								?>
 							<?php else : ?>
 								<?php if ( ! empty( $settings['logo_image']['url'] ) ) : ?>
-									<img src="<?php echo esc_url( $settings['logo_image']['url'] ); ?>" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>" class="kv-menu-logo-img">
+									<img src="<?php echo esc_url( $settings['logo_image']['url'] ); ?>" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>" class="kv-menu-logo-img kv-logo-normal">
+									<?php if ( 'yes' === $settings['is_sticky_header'] && ! empty( $settings['sticky_logo']['url'] ) ) : ?>
+										<img src="<?php echo esc_url( $settings['sticky_logo']['url'] ); ?>" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>" class="kv-menu-logo-img kv-logo-sticky" style="display:none;">
+									<?php endif; ?>
 								<?php endif; ?>
 							<?php endif; ?>
 						</a>
@@ -2199,6 +2382,22 @@ class KV_Menu_Widget extends \Elementor\Widget_Base {
 						</div>
 					<?php endif; ?>
 				</nav>
+
+				<?php if ( 'yes' === $settings['show_desktop_cta'] ) : 
+					$this->add_link_attributes( 'desktop_cta', $settings['desktop_cta_url'] );
+				?>
+					<div class="kv-menu-desktop-cta-wrapper">
+						<a <?php $this->print_render_attribute_string( 'desktop_cta' ); ?> class="kv-desktop-cta">
+							<span class="kv-cta-text"><?php echo esc_html( $settings['desktop_cta_text'] ); ?></span>
+							<?php if ( ! empty( $settings['desktop_cta_icon']['value'] ) ) : ?>
+								<span class="kv-cta-icon">
+									<?php \Elementor\Icons_Manager::render_icon( $settings['desktop_cta_icon'], [ 'aria-hidden' => 'true' ] ); ?>
+								</span>
+							<?php endif; ?>
+						</a>
+					</div>
+				<?php endif; ?>
+
 			</div>
 		</div>
 		<?php
