@@ -24,6 +24,26 @@ class KV_Menu_Admin_Dashboard {
 		add_action( 'init', [ $this, 'register_cpt' ] );
 		add_action( 'admin_menu', [ $this, 'register_admin_menu' ] );
 		add_action( 'admin_init', [ $this, 'ensure_elementor_support' ] );
+		add_action( 'admin_init', [ $this, 'register_settings' ] );
+	}
+
+	/**
+	 * Register the global default header mode setting.
+	 */
+	public function register_settings() {
+		register_setting(
+			'kv_nav_settings',
+			'kv_nav_default_header_mode',
+			[
+				'type'              => 'string',
+				'sanitize_callback' => [ $this, 'sanitize_default_mode' ],
+				'default'           => 'light',
+			]
+		);
+	}
+
+	public function sanitize_default_mode( $value ) {
+		return in_array( $value, [ 'light', 'dark' ], true ) ? $value : 'light';
 	}
 
 	/**
@@ -172,6 +192,25 @@ class KV_Menu_Admin_Dashboard {
 					</div>
 
 				</div>
+			</div>
+
+			<div style="background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-top: 20px; max-width: 900px;">
+				<h2 style="margin-top: 0; display: flex; align-items: center; gap: 8px;">
+					<span class="dashicons dashicons-admin-appearance" style="color: #6366f1;"></span>
+					<?php esc_html_e( 'Global Header Default', 'kv-menu' ); ?>
+				</h2>
+				<p style="color: #64748b;">
+					<?php esc_html_e( 'Default header mode for pages set to "Inherit". Override any single page from its "KV Header Settings" box.', 'kv-menu' ); ?>
+				</p>
+				<form method="post" action="options.php">
+					<?php settings_fields( 'kv_nav_settings' ); ?>
+					<?php $default_mode = get_option( 'kv_nav_default_header_mode', 'light' ); ?>
+					<select name="kv_nav_default_header_mode" style="min-width: 220px;">
+						<option value="light" <?php selected( $default_mode, 'light' ); ?>><?php esc_html_e( 'Solid Light', 'kv-menu' ); ?></option>
+						<option value="dark" <?php selected( $default_mode, 'dark' ); ?>><?php esc_html_e( 'Transparent Dark', 'kv-menu' ); ?></option>
+					</select>
+					<?php submit_button( __( 'Save Default', 'kv-menu' ) ); ?>
+				</form>
 			</div>
 		</div>
 		<?php

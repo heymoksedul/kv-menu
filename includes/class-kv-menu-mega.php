@@ -216,7 +216,7 @@ class KV_Menu_Mega {
 
 		// Save Template ID
 		if ( isset( $_POST['kv-menu-mega-template-id'][ $menu_item_db_id ] ) ) {
-			$template_id = sanitize_text_field( $_POST['kv-menu-mega-template-id'][ $menu_item_db_id ] );
+			$template_id = absint( $_POST['kv-menu-mega-template-id'][ $menu_item_db_id ] );
 			if ( ! empty( $template_id ) ) {
 				update_post_meta( $menu_item_db_id, '_kv_menu_mega_template_id', $template_id );
 			} else {

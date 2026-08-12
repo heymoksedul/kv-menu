@@ -201,7 +201,9 @@ class KV_Mega_Menu_Tabs_Widget extends \Elementor\Widget_Base {
 	protected function render() {
 		$settings = $this->get_settings_for_display();
 		$tabs = $settings['tabs'];
-		$id_int = substr( $this->get_id_int(), 0, 3 );
+		// Use the full unique widget id to avoid DOM id collisions when
+		// multiple tabs widgets appear on the same page.
+		$id_int = $this->get_id();
 		?>
 		<div class="kv-mega-tabs-wrapper" id="kv-mega-tabs-<?php echo esc_attr( $id_int ); ?>">
 			
