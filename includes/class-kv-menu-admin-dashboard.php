@@ -157,7 +157,7 @@ class KV_Menu_Admin_Dashboard {
 		?>
 		<div class="wrap" style="max-width: 900px;">
 			<h1 style="display: flex; align-items: center; gap: 10px;">
-				<span class="dashicons dashicons-menu" style="font-size: 32px; width: 32px; height: 32px; color: #6366f1;"></span>
+				<span class="dashicons dashicons-menu" style="font-size: 32px; width: 32px; height: 32px; color: #845CFF;"></span>
 				<?php esc_html_e( 'KV Menu Dashboard', 'kv-menu' ); ?>
 			</h1>
 
@@ -171,7 +171,7 @@ class KV_Menu_Admin_Dashboard {
 					
 					<div style="border: 1px solid #e2e8f0; padding: 20px; border-radius: 8px;">
 						<h3 style="margin-top: 0; display: flex; align-items: center; gap: 8px;">
-							<span class="dashicons dashicons-welcome-widgets-menus" style="color: #6366f1;"></span>
+							<span class="dashicons dashicons-welcome-widgets-menus" style="color: #845CFF;"></span>
 							<?php esc_html_e( 'Manage Nav Menus', 'kv-menu' ); ?>
 						</h3>
 						<p style="color: #64748b; margin-bottom: 20px;"><?php esc_html_e( 'Create your menu structure, manage tabs, and set parent/child relationships.', 'kv-menu' ); ?></p>
@@ -182,7 +182,7 @@ class KV_Menu_Admin_Dashboard {
 
 					<div style="border: 1px solid #e2e8f0; padding: 20px; border-radius: 8px;">
 						<h3 style="margin-top: 0; display: flex; align-items: center; gap: 8px;">
-							<span class="dashicons dashicons-layout" style="color: #6366f1;"></span>
+							<span class="dashicons dashicons-layout" style="color: #845CFF;"></span>
 							<?php esc_html_e( 'Manage Mega Menus', 'kv-menu' ); ?>
 						</h3>
 						<p style="color: #64748b; margin-bottom: 20px;"><?php esc_html_e( 'Design custom Elementor layouts to drop down from your navigation items.', 'kv-menu' ); ?></p>
@@ -196,7 +196,7 @@ class KV_Menu_Admin_Dashboard {
 
 			<div style="background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-top: 20px; max-width: 900px;">
 				<h2 style="margin-top: 0; display: flex; align-items: center; gap: 8px;">
-					<span class="dashicons dashicons-admin-appearance" style="color: #6366f1;"></span>
+					<span class="dashicons dashicons-admin-appearance" style="color: #845CFF;"></span>
 					<?php esc_html_e( 'Global Header Default', 'kv-menu' ); ?>
 				</h2>
 				<p style="color: #64748b;">

@@ -111,7 +111,7 @@ class KV_Menu_Mega {
 		?>
 		<div class="kv-menu-mega-fields-container description-wide" style="margin: 10px 0; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; background-color: #f8fafc; box-sizing: border-box;">
 			<h4 style="margin: 0 0 10px 0; font-size: 13px; color: #1e293b; display: flex; align-items: center; gap: 6px;">
-				<span class="dashicons dashicons-menu" style="font-size: 18px; width: 18px; height: 18px; color: #6366f1;"></span>
+				<span class="dashicons dashicons-menu" style="font-size: 18px; width: 18px; height: 18px; color: #845CFF;"></span>
 				<strong><?php esc_html_e( 'KV Mega Menu Settings', 'kv-menu' ); ?></strong>
 			</h4>
 			

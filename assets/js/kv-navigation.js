@@ -84,14 +84,14 @@
 
 		// ---------- Drilldown (whole parent item clickable in drawer) ----------
 		// Delegated so the entire <a> row (text + arrow) triggers the drilldown.
-		$scope.on( 'click', '.kvn-menu .menu-item-has-children > a, .kvn-menu .menu-item-has-mega-menu > a', function( e ) {
+		$scope.on( 'click', '.kvn-menu .menu-item > a', function( e ) {
 			if ( ! isDrawerMode() ) {
 				return; // desktop: allow normal hover dropdown / link
 			}
-			e.preventDefault();
-			e.stopPropagation();
 			var $sub = $( this ).siblings( '.sub-menu, .kv-nav-mega-panel' ).first();
 			if ( $sub.length ) {
+				e.preventDefault();
+				e.stopPropagation();
 				$sub.addClass( 'is-active' );
 				updateBack();
 				var $firstLink = $sub.find( 'a, button' ).filter( ':visible' ).first();

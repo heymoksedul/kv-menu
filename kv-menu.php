@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'KV_NAV_VERSION', '1.1.0' );
+define( 'KV_NAV_VERSION', '1.1.30' );
 define( 'KV_NAV_FILE', __FILE__ );
 define( 'KV_NAV_PATH', plugin_dir_path( __FILE__ ) );
 define( 'KV_NAV_URL', plugin_dir_url( __FILE__ ) );
@@ -68,6 +68,33 @@ final class KV_Menu_Extension {
 
 		// Register assets.
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_assets' ] );
+
+		// Add mega menu classes to menu items.
+		add_filter( 'nav_menu_css_class', [ $this, 'add_mega_menu_classes' ], 10, 4 );
+	}
+
+	public function add_mega_menu_classes( $classes, $item, $args, $depth ) {
+		if ( 0 === $depth ) {
+			$mega_enabled = get_post_meta( $item->ID, '_kv_menu_mega_enabled', true );
+			if ( 'yes' === $mega_enabled ) {
+				$classes[] = 'menu-item-has-mega-menu';
+				
+				$width_type = get_post_meta( $item->ID, '_kv_menu_mega_width_type', true );
+				if ( empty( $width_type ) ) {
+					$width_type = 'full';
+				}
+				if ( 'full' === $width_type ) {
+					$classes[] = 'menu-item-mega-full';
+				} else {
+					$align = get_post_meta( $item->ID, '_kv_menu_mega_alignment', true );
+					$align = empty( $align ) ? 'center' : $align;
+					if ( 'center' === $align ) {
+						$classes[] = 'menu-item-mega-center';
+					}
+				}
+			}
+		}
+		return $classes;
 	}
 
 	public function admin_notice_missing_main_plugin() {

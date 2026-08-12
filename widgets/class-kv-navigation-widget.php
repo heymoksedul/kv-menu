@@ -59,6 +59,23 @@ class KV_Navigation_Widget extends \Elementor\Widget_Base {
 		];
 	}
 
+	private function get_elementor_templates() {
+		$options = [ '0' => esc_html__( '— Select Template —', 'kv-menu' ) ];
+		$templates = get_posts( [
+			'post_type'      => 'elementor_library',
+			'posts_per_page' => -1,
+			'post_status'    => 'publish',
+			'orderby'        => 'title',
+			'order'          => 'ASC',
+		] );
+		if ( ! empty( $templates ) ) {
+			foreach ( $templates as $template ) {
+				$options[ $template->ID ] = $template->post_title;
+			}
+		}
+		return $options;
+	}
+
 	protected function register_controls() {
 
 		// ==========================================================
@@ -370,12 +387,42 @@ class KV_Navigation_Widget extends \Elementor\Widget_Base {
 		);
 
 		$this->add_control(
+			'cta_type',
+			[
+				'label'   => esc_html__( 'CTA Type', 'kv-menu' ),
+				'type'    => \Elementor\Controls_Manager::SELECT,
+				'default' => 'button',
+				'options' => [
+					'button'   => esc_html__( 'Default Button', 'kv-menu' ),
+					'template' => esc_html__( 'Saved Template', 'kv-menu' ),
+				],
+				'condition' => [ 'show_cta' => 'yes' ],
+			]
+		);
+
+		$this->add_control(
+			'cta_template_id',
+			[
+				'label'     => esc_html__( 'Select Template', 'kv-menu' ),
+				'type'      => \Elementor\Controls_Manager::SELECT2,
+				'options'   => $this->get_elementor_templates(),
+				'condition' => [
+					'show_cta' => 'yes',
+					'cta_type' => 'template',
+				],
+			]
+		);
+
+		$this->add_control(
 			'cta_text',
 			[
 				'label'     => esc_html__( 'CTA Text', 'kv-menu' ),
 				'type'      => \Elementor\Controls_Manager::TEXT,
 				'default'   => esc_html__( 'Request A Proposal', 'kv-menu' ),
-				'condition' => [ 'show_cta' => 'yes' ],
+				'condition' => [
+					'show_cta' => 'yes',
+					'cta_type' => 'button',
+				],
 			]
 		);
 
@@ -385,7 +432,10 @@ class KV_Navigation_Widget extends \Elementor\Widget_Base {
 				'label'     => esc_html__( 'CTA URL', 'kv-menu' ),
 				'type'      => \Elementor\Controls_Manager::URL,
 				'default'   => [ 'url' => '#' ],
-				'condition' => [ 'show_cta' => 'yes' ],
+				'condition' => [
+					'show_cta' => 'yes',
+					'cta_type' => 'button',
+				],
 			]
 		);
 
@@ -395,7 +445,10 @@ class KV_Navigation_Widget extends \Elementor\Widget_Base {
 				'label'     => esc_html__( 'CTA Icon', 'kv-menu' ),
 				'type'      => \Elementor\Controls_Manager::ICONS,
 				'default'   => [ 'value' => 'fas fa-arrow-right', 'library' => 'fa-solid' ],
-				'condition' => [ 'show_cta' => 'yes' ],
+				'condition' => [
+					'show_cta' => 'yes',
+					'cta_type' => 'button',
+				],
 			]
 		);
 
@@ -580,6 +633,24 @@ class KV_Navigation_Widget extends \Elementor\Widget_Base {
 				]
 			);
 
+			$this->add_control(
+				'skin_' . $skin . '_blur',
+				[
+					'label'      => esc_html__( 'Backdrop Blur (px)', 'kv-menu' ),
+					'type'       => \Elementor\Controls_Manager::SLIDER,
+					'size_units' => [ 'px' ],
+					'range'      => [
+						'px' => [
+							'min' => 0,
+							'max' => 50,
+						],
+					],
+					'selectors'  => [
+						'{{WRAPPER}} .kv-navigation-wrapper' => '--kvn-backdrop-' . $skin . ': blur({{SIZE}}{{UNIT}});',
+					],
+				]
+			);
+
 			if ( 'sticky' === $skin ) {
 				$this->add_group_control(
 					\Elementor\Group_Control_Box_Shadow::get_type(),
@@ -626,7 +697,7 @@ class KV_Navigation_Widget extends \Elementor\Widget_Base {
 			$this->add_control(
 				'skin_' . $skin . '_toggle',
 				[
-					'label'     => esc_html__( 'Toggle / Hamburger Color', 'kv-menu' ),
+					'label'     => esc_html__( 'Toggle Icon Color', 'kv-menu' ),
 					'type'      => \Elementor\Controls_Manager::COLOR,
 					'selectors' => [
 						'{{WRAPPER}} .kv-navigation-wrapper' => '--kvn-toggle-' . $skin . ': {{VALUE}};',
@@ -806,13 +877,13 @@ class KV_Navigation_Widget extends \Elementor\Widget_Base {
 			]
 		);
 
-		$this->add_control(
-			'cta_bg',
+		$this->add_group_control(
+			\Elementor\Group_Control_Background::get_type(),
 			[
-				'label'     => esc_html__( 'Background', 'kv-menu' ),
-				'type'      => \Elementor\Controls_Manager::COLOR,
-				'default'   => '#6366f1',
-				'selectors' => [ '{{WRAPPER}} .kv-nav-cta' => 'background-color: {{VALUE}};' ],
+				'name'     => 'cta_bg',
+				'label'    => esc_html__( 'Background', 'kv-menu' ),
+				'types'    => [ 'classic', 'gradient' ],
+				'selector' => '{{WRAPPER}} .kv-nav-cta',
 			]
 		);
 
@@ -829,12 +900,13 @@ class KV_Navigation_Widget extends \Elementor\Widget_Base {
 			]
 		);
 
-		$this->add_control(
-			'cta_hover_bg',
+		$this->add_group_control(
+			\Elementor\Group_Control_Background::get_type(),
 			[
-				'label'     => esc_html__( 'Background', 'kv-menu' ),
-				'type'      => \Elementor\Controls_Manager::COLOR,
-				'selectors' => [ '{{WRAPPER}} .kv-nav-cta:hover' => 'background-color: {{VALUE}};' ],
+				'name'     => 'cta_hover_bg',
+				'label'    => esc_html__( 'Background', 'kv-menu' ),
+				'types'    => [ 'classic', 'gradient' ],
+				'selector' => '{{WRAPPER}} .kv-nav-cta:hover',
 			]
 		);
 
@@ -907,7 +979,7 @@ class KV_Navigation_Widget extends \Elementor\Widget_Base {
 			[
 				'label'     => esc_html__( 'Drawer Link Hover', 'kv-menu' ),
 				'type'      => \Elementor\Controls_Manager::COLOR,
-				'default'   => '#6366f1',
+				'default'   => '#845CFF',
 				'selectors' => [ '{{WRAPPER}}' => '--kvn-drawer-link-hover: {{VALUE}};' ],
 			]
 		);
@@ -1049,14 +1121,25 @@ class KV_Navigation_Widget extends \Elementor\Widget_Base {
 							</div>
 						<?php endif; ?>
 
-						<?php if ( $is_responsive && 'yes' === $settings['show_cta'] && 'yes' === $settings['cta_show_in_drawer'] && ! empty( $settings['cta_text'] ) ) :
-							$this->add_link_attributes( 'cta_drawer', $settings['cta_url'] );
-							$this->add_render_attribute( 'cta_drawer', 'class', 'kv-nav-cta kv-nav-cta--drawer' );
-							?>
-							<div class="kv-nav-drawer-cta">
-								<a <?php $this->print_render_attribute_string( 'cta_drawer' ); ?>><?php echo esc_html( $settings['cta_text'] ); ?></a>
-							</div>
-						<?php endif; ?>
+						<?php if ( $is_responsive && 'yes' === $settings['show_cta'] && 'yes' === $settings['cta_show_in_drawer'] ) :
+								if ( 'button' === $settings['cta_type'] && ! empty( $settings['cta_text'] ) ) {
+									$this->add_render_attribute( 'cta_drawer', 'class', 'kv-nav-cta kv-nav-cta--drawer' );
+									if ( ! empty( $settings['cta_link']['url'] ) ) {
+										$this->add_link_attributes( 'cta_drawer', $settings['cta_link'] );
+									}
+									?>
+									<div class="kv-nav-drawer-cta">
+										<a <?php $this->print_render_attribute_string( 'cta_drawer' ); ?>><?php echo esc_html( $settings['cta_text'] ); ?></a>
+									</div>
+									<?php
+								} elseif ( 'template' === $settings['cta_type'] && ! empty( $settings['cta_template_id'] ) ) {
+									?>
+									<div class="kv-nav-drawer-cta kv-nav-drawer-cta-template">
+										<?php echo \Elementor\Plugin::instance()->frontend->get_builder_content_for_display( $settings['cta_template_id'] ); ?>
+									</div>
+									<?php
+								}
+						endif; ?>
 					</nav>
 				</div>
 
@@ -1069,17 +1152,26 @@ class KV_Navigation_Widget extends \Elementor\Widget_Base {
 						<a <?php $this->print_render_attribute_string( 'secondary_link' ); ?>><?php echo esc_html( $settings['secondary_link_text'] ); ?></a>
 					<?php endif; ?>
 
-					<?php if ( 'yes' === $settings['show_cta'] && ! empty( $settings['cta_text'] ) ) :
-						$this->add_link_attributes( 'cta', $settings['cta_url'] );
-						$this->add_render_attribute( 'cta', 'class', 'kv-nav-cta' );
-						?>
-						<a <?php $this->print_render_attribute_string( 'cta' ); ?>>
-							<span class="kv-nav-cta-text"><?php echo esc_html( $settings['cta_text'] ); ?></span>
-							<?php if ( ! empty( $settings['cta_icon']['value'] ) ) : ?>
-								<span class="kv-nav-cta-icon"><?php \Elementor\Icons_Manager::render_icon( $settings['cta_icon'], [ 'aria-hidden' => 'true' ] ); ?></span>
-							<?php endif; ?>
-						</a>
-					<?php endif; ?>
+					<?php if ( 'yes' === $settings['show_cta'] ) :
+						if ( 'button' === $settings['cta_type'] && ! empty( $settings['cta_text'] ) ) {
+							$this->add_link_attributes( 'cta', $settings['cta_url'] );
+							$this->add_render_attribute( 'cta', 'class', 'kv-nav-cta' );
+							?>
+							<a <?php $this->print_render_attribute_string( 'cta' ); ?>>
+								<span class="kv-nav-cta-text"><?php echo esc_html( $settings['cta_text'] ); ?></span>
+								<?php if ( ! empty( $settings['cta_icon']['value'] ) ) : ?>
+									<span class="kv-nav-cta-icon"><?php \Elementor\Icons_Manager::render_icon( $settings['cta_icon'], [ 'aria-hidden' => 'true' ] ); ?></span>
+								<?php endif; ?>
+							</a>
+							<?php
+						} elseif ( 'template' === $settings['cta_type'] && ! empty( $settings['cta_template_id'] ) ) {
+							?>
+							<div class="kv-nav-cta-template-wrapper">
+								<?php echo \Elementor\Plugin::instance()->frontend->get_builder_content_for_display( $settings['cta_template_id'] ); ?>
+							</div>
+							<?php
+						}
+					endif; ?>
 
 					<?php if ( $is_responsive ) : ?>
 						<button class="kv-nav-toggle-btn" aria-expanded="false" aria-controls="<?php echo esc_attr( $nav_id ); ?>" aria-label="<?php echo esc_attr__( 'Open menu', 'kv-menu' ); ?>">
@@ -1153,7 +1245,7 @@ class KV_Navigation_Widget extends \Elementor\Widget_Base {
 						if ( empty( $mega_content ) && ( current_user_can( 'edit_theme_options' ) || \Elementor\Plugin::$instance->editor->is_edit_mode() ) ) {
 							$mega_content  = '<div class="kv-nav-mega-empty" style="padding:24px; text-align:center; background:#f8fafc; border:2px dashed #cbd5e1; border-radius:8px;">';
 							$mega_content .= '<p style="margin:0 0 10px; font-weight:600; color:#64748b;">' . esc_html__( 'Mega Menu is empty. Add content in the KV Mega Menu Content box.', 'kv-menu' ) . '</p>';
-							$mega_content .= '<a href="' . esc_url( admin_url( 'post.php?post=' . $template_id . '&action=edit' ) ) . '" target="_blank" style="background:#6366f1; color:#fff; text-decoration:none; padding:8px 16px; border-radius:6px; display:inline-block;">' . esc_html__( 'Edit Mega Menu', 'kv-menu' ) . '</a>';
+							$mega_content .= '<a href="' . esc_url( admin_url( 'post.php?post=' . $template_id . '&action=edit' ) ) . '" target="_blank" style="background:#845CFF; color:#fff; text-decoration:none; padding:8px 16px; border-radius:6px; display:inline-block;">' . esc_html__( 'Edit Mega Menu', 'kv-menu' ) . '</a>';
 							$mega_content .= '</div>';
 						}
 					}
@@ -1270,6 +1362,7 @@ class KV_Navigation_Widget extends \Elementor\Widget_Base {
 			$html   .= '<div class="kv-mega-pane' . $current . $open . '" id="' . esc_attr( $id . '-' . $i ) . '">';
 			$html   .= '<button type="button" class="kv-mega-acc-head"><span class="kv-mega-acc-title">' . esc_html( $t_title ) . '</span><i class="fas fa-chevron-down kv-mega-acc-arrow" aria-hidden="true"></i></button>';
 			$html   .= '<div class="kv-mega-pane-inner">';
+			$html   .= '<div class="kv-mega-pane-left">';
 
 			$main = isset( $tab['main_title'] ) ? $tab['main_title'] : '';
 			$sub  = isset( $tab['subtitle'] ) ? $tab['subtitle'] : '';
@@ -1283,8 +1376,6 @@ class KV_Navigation_Widget extends \Elementor\Widget_Base {
 				}
 				$html .= '</div>';
 			}
-
-			$html .= '<div class="kv-mega-pane-body">';
 
 			// Links.
 			$links = ( isset( $tab['links'] ) && is_array( $tab['links'] ) ) ? $tab['links'] : [];
@@ -1302,6 +1393,7 @@ class KV_Navigation_Widget extends \Elementor\Widget_Base {
 				}
 				$html .= '</ul>';
 			}
+			$html .= '</div>'; // pane-left
 
 			// Media column (featured image + promo).
 			$featured = isset( $tab['featured_image'] ) ? $tab['featured_image'] : '';
@@ -1338,7 +1430,6 @@ class KV_Navigation_Widget extends \Elementor\Widget_Base {
 				$html .= '</div>'; // media
 			}
 
-			$html .= '</div>'; // pane-body
 			$html .= '</div>'; // pane-inner
 			$html .= '</div>'; // pane
 		}

@@ -70,6 +70,16 @@ class KV_Mega_Menu_Tabs_Widget extends \Elementor\Widget_Base {
 		);
 
 		$repeater->add_control(
+			'divider_text',
+			[
+				'label'       => esc_html__( 'Divider Text', 'kv-menu' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
+				'default'     => esc_html__( 'HOME SERVICES MAIN PAGE', 'kv-menu' ),
+				'label_block' => true,
+			]
+		);
+
+		$repeater->add_control(
 			'links_list',
 			[
 				'label'       => esc_html__( 'Links List', 'kv-menu' ),
@@ -240,6 +250,11 @@ class KV_Mega_Menu_Tabs_Widget extends \Elementor\Widget_Base {
 						<div class="kv-mega-tab-pane-header">
 							<h3><?php echo esc_html( $tab['main_title'] ); ?></h3>
 							<p><?php echo esc_html( $tab['subtitle'] ); ?></p>
+							<?php if ( ! empty( $tab['divider_text'] ) ) : ?>
+								<div class="kv-mega-tab-divider">
+									<span><?php echo esc_html( $tab['divider_text'] ); ?></span>
+								</div>
+							<?php endif; ?>
 						</div>
 
 						<div class="kv-mega-tab-pane-body">
