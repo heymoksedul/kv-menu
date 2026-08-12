@@ -2256,10 +2256,16 @@ class KV_Menu_Widget extends \Elementor\Widget_Base {
 						ob_start();
 						\Elementor\Icons_Manager::render_icon( $settings['submenu_indicator_icon'], [ 'aria-hidden' => 'true' ] );
 						$desktop_icon = ob_get_clean();
+						if ( empty( trim( $desktop_icon ) ) ) {
+							$desktop_icon = '<i class="fas fa-angle-down" aria-hidden="true"></i>';
+						}
 
 						ob_start();
 						\Elementor\Icons_Manager::render_icon( $settings['submenu_indicator_icon_mobile'], [ 'aria-hidden' => 'true' ] );
 						$mobile_icon = ob_get_clean();
+						if ( empty( trim( $mobile_icon ) ) ) {
+							$mobile_icon = '<i class="fas fa-chevron-right" aria-hidden="true"></i>';
+						}
 
 						$filter_callback = function( $item_output, $item, $depth, $args) use ( $desktop_icon, $mobile_icon ) {
 							$has_children = in_array( 'menu-item-has-children', $item->classes );

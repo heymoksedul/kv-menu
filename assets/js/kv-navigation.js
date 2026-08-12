@@ -82,12 +82,14 @@
 			updateBack();
 		} );
 
-		// ---------- Drilldown (parent item click / keyboard in drawer) ----------
-		$scope.find( '.kvn-menu .menu-item-has-children > a, .kvn-menu .menu-item-has-mega-menu > a' ).on( 'click', function( e ) {
+		// ---------- Drilldown (whole parent item clickable in drawer) ----------
+		// Delegated so the entire <a> row (text + arrow) triggers the drilldown.
+		$scope.on( 'click', '.kvn-menu .menu-item-has-children > a, .kvn-menu .menu-item-has-mega-menu > a', function( e ) {
 			if ( ! isDrawerMode() ) {
 				return; // desktop: allow normal hover dropdown / link
 			}
 			e.preventDefault();
+			e.stopPropagation();
 			var $sub = $( this ).siblings( '.sub-menu, .kv-nav-mega-panel' ).first();
 			if ( $sub.length ) {
 				$sub.addClass( 'is-active' );
@@ -134,6 +136,18 @@
 			if ( 'Enter' === e.key || ' ' === e.key || 13 === e.keyCode || 32 === e.keyCode ) {
 				e.preventDefault();
 				$( this ).trigger( 'click' );
+			}
+		} );
+
+		// Native mega — mobile accordion (tap a group header to expand its links)
+		$scope.find( '.kv-mega-acc-head' ).on( 'click', function( e ) {
+			e.preventDefault();
+			var $pane = $( this ).closest( '.kv-mega-pane' );
+			var wasOpen = $pane.hasClass( 'is-open' );
+			// Single-open accordion: collapse siblings, toggle this one.
+			$pane.closest( '.kv-mega-content' ).find( '.kv-mega-pane' ).removeClass( 'is-open' );
+			if ( ! wasOpen ) {
+				$pane.addClass( 'is-open' );
 			}
 		} );
 

@@ -1101,12 +1101,18 @@ class KV_Navigation_Widget extends \Elementor\Widget_Base {
 		ob_start();
 		\Elementor\Icons_Manager::render_icon( $settings['submenu_indicator_icon'], [ 'aria-hidden' => 'true' ] );
 		$desktop_icon = ob_get_clean();
+		if ( '' === trim( (string) $desktop_icon ) ) {
+			$desktop_icon = '<i class="fas fa-angle-down" aria-hidden="true"></i>';
+		}
 
 		$mobile_icon = '';
 		if ( ! empty( $settings['submenu_indicator_icon_mobile']['value'] ) ) {
 			ob_start();
 			\Elementor\Icons_Manager::render_icon( $settings['submenu_indicator_icon_mobile'], [ 'aria-hidden' => 'true' ] );
 			$mobile_icon = ob_get_clean();
+		}
+		if ( '' === trim( (string) $mobile_icon ) ) {
+			$mobile_icon = '<i class="fas fa-chevron-right" aria-hidden="true"></i>';
 		}
 
 		$filter_callback = function ( $item_output, $item, $depth, $args ) use ( $desktop_icon, $mobile_icon ) {
@@ -1259,7 +1265,11 @@ class KV_Navigation_Widget extends \Elementor\Widget_Base {
 		$html .= '<div class="kv-mega-content">';
 		foreach ( $tabs as $i => $tab ) {
 			$current = ( 0 === $i ) ? ' kv-mega-pane--current' : '';
-			$html   .= '<div class="kv-mega-pane' . $current . '" id="' . esc_attr( $id . '-' . $i ) . '">';
+			$open    = ( 0 === $i ) ? ' is-open' : '';
+			$t_title = isset( $tab['tab_title'] ) ? $tab['tab_title'] : '';
+			$html   .= '<div class="kv-mega-pane' . $current . $open . '" id="' . esc_attr( $id . '-' . $i ) . '">';
+			$html   .= '<button type="button" class="kv-mega-acc-head"><span class="kv-mega-acc-title">' . esc_html( $t_title ) . '</span><i class="fas fa-chevron-down kv-mega-acc-arrow" aria-hidden="true"></i></button>';
+			$html   .= '<div class="kv-mega-pane-inner">';
 
 			$main = isset( $tab['main_title'] ) ? $tab['main_title'] : '';
 			$sub  = isset( $tab['subtitle'] ) ? $tab['subtitle'] : '';
@@ -1329,6 +1339,7 @@ class KV_Navigation_Widget extends \Elementor\Widget_Base {
 			}
 
 			$html .= '</div>'; // pane-body
+			$html .= '</div>'; // pane-inner
 			$html .= '</div>'; // pane
 		}
 		$html .= '</div>'; // content
