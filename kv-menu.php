@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'KV_NAV_VERSION', '1.1.30' );
+define( 'KV_NAV_VERSION', '1.1.31' );
 define( 'KV_NAV_FILE', __FILE__ );
 define( 'KV_NAV_PATH', plugin_dir_path( __FILE__ ) );
 define( 'KV_NAV_URL', plugin_dir_url( __FILE__ ) );

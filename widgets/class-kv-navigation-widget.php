@@ -1047,11 +1047,12 @@ class KV_Navigation_Widget extends \Elementor\Widget_Base {
 			return;
 		}
 
-		$is_responsive = ( 'none' !== $settings['breakpoint'] );
+		$breakpoint = ! empty( $settings['breakpoint'] ) ? $settings['breakpoint'] : 'tablet';
+		$is_responsive = ( 'none' !== $breakpoint );
 
 		$this->add_render_attribute( 'wrapper', 'class', 'kv-navigation-wrapper' );
 		$this->add_render_attribute( 'wrapper', 'class', 'kv-nav--menu-' . $settings['menu_position'] );
-		$this->add_render_attribute( 'wrapper', 'class', 'kv-nav--breakpoint-' . $settings['breakpoint'] );
+		$this->add_render_attribute( 'wrapper', 'class', 'kv-nav--breakpoint-' . $breakpoint );
 		$this->add_render_attribute( 'wrapper', 'class', 'kv-nav--width-' . $settings['container_width'] );
 		if ( $is_responsive ) {
 			$this->add_render_attribute( 'wrapper', 'class', 'kv-nav--anim-' . $settings['panel_animation'] );
@@ -1174,9 +1175,17 @@ class KV_Navigation_Widget extends \Elementor\Widget_Base {
 					endif; ?>
 
 					<?php if ( $is_responsive ) : ?>
-						<button class="kv-nav-toggle-btn" aria-expanded="false" aria-controls="<?php echo esc_attr( $nav_id ); ?>" aria-label="<?php echo esc_attr__( 'Open menu', 'kv-menu' ); ?>">
+						<button class="kv-nav-toggle-btn" aria-expanded="false" aria-controls="<?php echo esc_attr( $nav_id ); ?>" 
+aria-label="<?php echo esc_attr__( 'Open menu', 'kv-menu' ); ?>">
 							<span class="kv-nav-hamburger"><span></span><span></span><span></span></span>
 						</button>
+					<?php endif; ?>
+					
+					<!-- DEBUG: breakpoint=<?php echo esc_attr($breakpoint); ?>, is_responsive=<?php echo $is_responsive ? 'true' : 'false'; ?> -->
+					<?php if ( ! $is_responsive ) : ?>
+						<div style="background:red; color:white; padding: 10px; position:fixed; top:50px; right:10px; z-index: 999999;">
+							DEBUG: BREAKPOINT IS NONE!
+						</div>
 					<?php endif; ?>
 				</div>
 
@@ -1357,7 +1366,7 @@ class KV_Navigation_Widget extends \Elementor\Widget_Base {
 		$html .= '<div class="kv-mega-content">';
 		foreach ( $tabs as $i => $tab ) {
 			$current = ( 0 === $i ) ? ' kv-mega-pane--current' : '';
-			$open    = ( 0 === $i ) ? ' is-open' : '';
+			$open    = '';
 			$t_title = isset( $tab['tab_title'] ) ? $tab['tab_title'] : '';
 			$html   .= '<div class="kv-mega-pane' . $current . $open . '" id="' . esc_attr( $id . '-' . $i ) . '">';
 			$html   .= '<button type="button" class="kv-mega-acc-head"><span class="kv-mega-acc-title">' . esc_html( $t_title ) . '</span><i class="fas fa-chevron-down kv-mega-acc-arrow" aria-hidden="true"></i></button>';
