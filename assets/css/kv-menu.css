@@ -1420,29 +1420,41 @@ nav.kv-menu-nav {
   padding: 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 15px;
+  gap: 14px 16px;
 }
 .kv-mega-tab-links li a {
   display: flex;
   align-items: center;
-  gap: 10px;
-  color: #475569;
+  gap: 12px;
+  color: #1e293b;
   text-decoration: none;
   font-weight: 500;
-  transition: color 0.2s;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background-color: transparent;
+  transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+  box-sizing: border-box;
 }
 .kv-mega-tab-links li a:hover {
-  color: #845cff;
+  color: #6366f1;
+  background-color: #f1f5f9;
 }
 .kv-mega-tab-links li a i {
-  width: 30px;
-  height: 30px;
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
   background: #f1f5f9;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 6px;
-  color: #845cff;
+  border-radius: 8px;
+  color: #6366f1;
+  font-size: 14px;
+  transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.kv-mega-tab-links li a:hover i {
+  background: #6366f1;
+  color: #ffffff;
 }
 
 .kv-mega-tab-media {

@@ -206,6 +206,198 @@ class KV_Mega_Menu_Tabs_Widget extends \Elementor\Widget_Base {
 		);
 
 		$this->end_controls_section();
+
+		// ==========================================
+		// Style Tab: Content Links Items
+		// ==========================================
+		$this->start_controls_section(
+			'section_style_links',
+			[
+				'label' => esc_html__( 'Content Links Items', 'kv-menu' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			[
+				'name'     => 'link_typography',
+				'selector' => '{{WRAPPER}} .kv-mega-tab-links li a',
+			]
+		);
+
+		$this->add_responsive_control(
+			'link_padding',
+			[
+				'label'      => esc_html__( 'Item Padding', 'kv-menu' ),
+				'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', 'em', '%' ],
+				'default'    => [
+					'top'      => '10',
+					'right'    => '18',
+					'bottom'   => '10',
+					'left'     => '18',
+					'unit'     => 'px',
+					'isLinked' => false,
+				],
+				'selectors'  => [
+					'{{WRAPPER}} .kv-mega-tab-links li a' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'link_border_radius',
+			[
+				'label'      => esc_html__( 'Border Radius', 'kv-menu' ),
+				'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', '%' ],
+				'default'    => [
+					'top'      => '10',
+					'right'    => '10',
+					'bottom'   => '10',
+					'left'     => '10',
+					'unit'     => 'px',
+					'isLinked' => true,
+				],
+				'selectors'  => [
+					'{{WRAPPER}} .kv-mega-tab-links li a' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->start_controls_tabs( 'tabs_link_style' );
+
+		// Normal Tab
+		$this->start_controls_tab(
+			'tab_link_normal',
+			[
+				'label' => esc_html__( 'Normal', 'kv-menu' ),
+			]
+		);
+
+		$this->add_control(
+			'link_text_color',
+			[
+				'label'     => esc_html__( 'Text Color', 'kv-menu' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => '#1e293b',
+				'selectors' => [
+					'{{WRAPPER}} .kv-mega-tab-links li a' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Background::get_type(),
+			[
+				'name'     => 'link_bg',
+				'label'    => esc_html__( 'Background', 'kv-menu' ),
+				'types'    => [ 'classic', 'gradient' ],
+				'selector' => '{{WRAPPER}} .kv-mega-tab-links li a',
+			]
+		);
+
+		$this->add_control(
+			'link_icon_color',
+			[
+				'label'     => esc_html__( 'Icon Color', 'kv-menu' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => '#6366f1',
+				'selectors' => [
+					'{{WRAPPER}} .kv-mega-tab-links li a i' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'link_icon_bg',
+			[
+				'label'     => esc_html__( 'Icon Background', 'kv-menu' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => '#f1f5f9',
+				'selectors' => [
+					'{{WRAPPER}} .kv-mega-tab-links li a i' => 'background-color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->end_controls_tab();
+
+		// Hover Tab
+		$this->start_controls_tab(
+			'tab_link_hover',
+			[
+				'label' => esc_html__( 'Hover', 'kv-menu' ),
+			]
+		);
+
+		$this->add_control(
+			'link_hover_text_color',
+			[
+				'label'     => esc_html__( 'Hover Text Color', 'kv-menu' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => '#6366f1',
+				'selectors' => [
+					'{{WRAPPER}} .kv-mega-tab-links li a:hover' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Background::get_type(),
+			[
+				'name'     => 'link_hover_bg',
+				'label'    => esc_html__( 'Hover Background', 'kv-menu' ),
+				'types'    => [ 'classic', 'gradient' ],
+				'selector' => '{{WRAPPER}} .kv-mega-tab-links li a:hover',
+				'fields_options' => [
+					'background' => [
+						'default' => 'classic',
+					],
+					'color' => [
+						'default' => '#f1f5f9',
+					],
+				],
+			]
+		);
+
+		$this->add_control(
+			'link_hover_icon_color',
+			[
+				'label'     => esc_html__( 'Hover Icon Color', 'kv-menu' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => '#ffffff',
+				'selectors' => [
+					'{{WRAPPER}} .kv-mega-tab-links li a:hover i' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'link_hover_icon_bg',
+			[
+				'label'     => esc_html__( 'Hover Icon Background', 'kv-menu' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => '#6366f1',
+				'selectors' => [
+					'{{WRAPPER}} .kv-mega-tab-links li a:hover i' => 'background-color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Box_Shadow::get_type(),
+			[
+				'name'     => 'link_hover_box_shadow',
+				'selector' => '{{WRAPPER}} .kv-mega-tab-links li a:hover',
+			]
+		);
+
+		$this->end_controls_tab();
+		$this->end_controls_tabs();
+
+		$this->end_controls_section();
 	}
 
 	protected function render() {

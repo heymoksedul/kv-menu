@@ -1236,45 +1236,55 @@ body.kv-nav-dark
   flex: 1 1 auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 24px 20px;
+  gap: 14px 16px;
   align-content: start;
 }
 .kv-mega-links a {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 0;
-  border-radius: 0;
+  padding: 8px 10px;
+  border-radius: 8px;
   color: #1e293b;
   text-decoration: none;
   font-weight: 500;
-  transition: color 0.15s ease;
+  background-color: transparent;
+  transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+  box-sizing: border-box;
 }
-.kv-mega-links a:hover {
-  background: transparent;
+.kv-mega-links a:hover,
+.kv-mega-links a:focus,
+.kv-mega-links a:active {
+  background-color: #f1f5f9;
   color: #6366f1;
 }
 .kv-mega-links i {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   background: #6366f1;
   color: #fff;
-  border-radius: 6px;
+  border-radius: 8px;
   flex: 0 0 auto;
-  font-size: 13px;
+  font-size: 14px;
+  transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.kv-mega-links a:hover i {
+  background: #4f46e5;
+  transform: scale(1.05);
 }
 .kv-mega-links .kv-mega-icon-img {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   flex: 0 0 auto;
-  border-radius: 6px;
+  border-radius: 8px;
   object-fit: contain;
   background: #eef2ff;
   padding: 4px;
   box-sizing: border-box;
+  transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
 }
 .kv-mega-promo-head .kv-mega-icon-img {
   width: 22px;
@@ -1402,7 +1412,8 @@ body.kv-nav-dark
     display: none;
   }
   .kv-nav--breakpoint-tablet .kv-nav-panel .kv-mega-links a {
-    padding: 8px 0;
+    padding: 8px 14px;
+    border-radius: 8px;
     gap: 14px;
   }
   .kv-nav--breakpoint-tablet .kv-nav-panel .kv-mega-links i {
@@ -1493,7 +1504,8 @@ body.kv-nav-dark
     display: none;
   }
   .kv-nav--breakpoint-mobile .kv-nav-panel .kv-mega-links a {
-    padding: 8px 0;
+    padding: 8px 14px;
+    border-radius: 8px;
     gap: 14px;
   }
   .kv-nav--breakpoint-mobile .kv-nav-panel .kv-mega-links i {
