@@ -82,22 +82,44 @@
 			updateBack();
 		} );
 
-		// ---------- Drilldown (whole parent item clickable in drawer) ----------
-		// Delegated so the entire <a> row (text + arrow) triggers the drilldown.
+		// ---------- Drilldown (drawer) & Touch support (desktop) ----------
 		$scope.on( 'click', '.kvn-menu .menu-item > a', function( e ) {
-			if ( ! isDrawerMode() ) {
-				return; // desktop: allow normal hover dropdown / link
-			}
+			var $item = $( this ).parent( '.menu-item' );
 			var $sub = $( this ).siblings( '.sub-menu, .kv-nav-mega-panel' ).first();
-			if ( $sub.length ) {
-				e.preventDefault();
-				e.stopPropagation();
-				$sub.addClass( 'is-active' );
-				updateBack();
-				var $firstLink = $sub.find( 'a, button' ).filter( ':visible' ).first();
-				if ( $firstLink.length ) {
-					$firstLink.trigger( 'focus' );
+			
+			if ( isDrawerMode() ) {
+				if ( $sub.length ) {
+					e.preventDefault();
+					e.stopPropagation();
+					$sub.addClass( 'is-active' );
+					updateBack();
+					var $firstLink = $sub.find( 'a, button' ).filter( ':visible' ).first();
+					if ( $firstLink.length ) {
+						$firstLink.trigger( 'focus' );
+					}
 				}
+			} else {
+				// Desktop Touchscreen Support (e.g. Surface / iPad / Touch Laptop)
+				if ( $sub.length && ( 'ontouchstart' in window || navigator.maxTouchPoints > 0 ) ) {
+					if ( ! $item.hasClass( 'is-open' ) ) {
+						e.preventDefault();
+						$scope.find( '.kvn-menu .menu-item' ).not( $item ).removeClass( 'is-open' );
+						$item.addClass( 'is-open' );
+					}
+				}
+			}
+		} );
+
+		// Desktop: Close mega menu on mouseleave or click outside
+		$scope.on( 'mouseleave', '.kvn-menu .menu-item', function() {
+			if ( ! isDrawerMode() ) {
+				$( this ).removeClass( 'is-open' );
+			}
+		} );
+
+		$( document ).on( 'click.kvnav_outside', function( e ) {
+			if ( ! $( e.target ).closest( $wrapper ).length ) {
+				$scope.find( '.kvn-menu .menu-item' ).removeClass( 'is-open' );
 			}
 		} );
 
